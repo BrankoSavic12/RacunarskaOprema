@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>rs.ac.fink</groupId>
-    <artifactId>RacunarskaOPrema</artifactId>
+    <artifactId>RacunarskaOprema</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>RacunarskaOPrema</name>
+    <name>RacunarskaOprema</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
