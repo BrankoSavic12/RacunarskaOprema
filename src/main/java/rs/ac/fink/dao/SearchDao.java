@@ -75,26 +75,36 @@ public class SearchDao {
     }
 
     public int insert(Search search, Connection con) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        int id = -1;
-        try {
-            ps = con.prepareStatement(
-                    "INSERT INTO search (fk_user, fk_search_settings) VALUES (?, ?)",
-                    Statement.RETURN_GENERATED_KEYS
-            );
-            ps.setInt(1, search.getUser().getIdUser());
-            ps.setInt(2, search.getSearchSettings().getIdSearchSettings());
-            ps.executeUpdate();
-            rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                id = rs.getInt(1);
-            }
-        } finally {
-            ResourcesManager.closeResources(rs, ps);
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    int id = -1;
+    try {
+        ps = con.prepareStatement(
+                "INSERT INTO search (fk_user, fk_search_settings) VALUES (?, ?)",
+                Statement.RETURN_GENERATED_KEYS
+        );
+        int userId = search.getUser().getIdUser();
+        int searchSettingsId = search.getSearchSettings().getIdSearchSettings();
+
+        System.out.println("User ID for Search: " + userId);
+        System.out.println("SearchSettings ID for Search: " + searchSettingsId);
+
+        ps.setInt(1, userId);
+        ps.setInt(2, searchSettingsId);
+
+        System.out.println("Executing query: INSERT INTO search (fk_user, fk_search_settings) VALUES (" + userId + ", " + searchSettingsId + ")");
+
+        ps.executeUpdate();
+        rs = ps.getGeneratedKeys();
+        if (rs.next()) {
+            id = rs.getInt(1);
         }
-        return id;
+    } finally {
+        ResourcesManager.closeResources(rs, ps);
     }
+    return id;
+}
+
 
     public void update(Search search, Connection con) throws SQLException {
         PreparedStatement ps = null;

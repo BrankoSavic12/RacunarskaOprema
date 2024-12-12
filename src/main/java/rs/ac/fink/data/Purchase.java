@@ -8,18 +8,25 @@ package rs.ac.fink.data;
  *
  * @author MyPC
  */
+
 import java.io.Serializable;
+
 public class Purchase implements Serializable {
     private int idPurchase;
-    private int userId;
-    private int productId;
+    private User user;        // Objekat User
+    private Product product;  // Objekat Product
 
     public Purchase() {}
 
-    public Purchase(int idPurchase, int userId, int productId) {
+    public Purchase(int idPurchase, User user, Product product) {
         this.idPurchase = idPurchase;
-        this.userId = userId;
-        this.productId = productId;
+        this.user = user;
+        this.product = product;
+    }
+
+    public Purchase(User user, Product product) {
+        this.user = user;
+        this.product = product;
     }
 
     public int getIdPurchase() {
@@ -30,28 +37,28 @@ public class Purchase implements Serializable {
         this.idPurchase = idPurchase;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     @Override
     public String toString() {
         return "Purchase{" +
                 "idPurchase=" + idPurchase +
-                ", userId=" + userId +
-                ", productId=" + productId +
+                ", user=" + user +
+                ", product=" + product +
                 '}';
     }
 }

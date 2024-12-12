@@ -75,28 +75,31 @@ public class ProductDao {
     }
 
     public int insert(Product product, Connection con) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        int id = -1;
-        try {
-            ps = con.prepareStatement(
-                    "INSERT INTO product (name, price, type, stock_quantity) VALUES (?, ?, ?, ?)",
-                    Statement.RETURN_GENERATED_KEYS
-            );
-            ps.setString(1, product.getName());
-            ps.setLong(2, product.getPrice());
-            ps.setString(3, product.getType());
-            ps.setLong(4, product.getStockQuantity());
-            ps.executeUpdate();
-            rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                id = rs.getInt(1);
-            }
-        } finally {
-            ResourcesManager.closeResources(rs, ps);
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    int id = -1;
+    try {
+        System.out.println("Preparing to insert product: " + product);
+        ps = con.prepareStatement(
+                "INSERT INTO product (name, price, type, stock_quantity) VALUES (?, ?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS
+        );
+        ps.setString(1, product.getName());
+        ps.setLong(2, product.getPrice());
+        ps.setString(3, product.getType());
+        ps.setLong(4, product.getStockQuantity());
+        ps.executeUpdate();
+        rs = ps.getGeneratedKeys();
+        if (rs.next()) {
+            id = rs.getInt(1);
+            System.out.println("Inserted product with ID: " + id);
         }
-        return id;
+    } finally {
+        ResourcesManager.closeResources(rs, ps);
     }
+    return id;
+}
+
 
     public void update(Product product, Connection con) throws SQLException {
         PreparedStatement ps = null;

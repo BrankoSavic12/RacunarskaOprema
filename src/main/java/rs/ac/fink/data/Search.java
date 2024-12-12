@@ -8,18 +8,26 @@ package rs.ac.fink.data;
  *
  * @author MyPC
  */
+
+
 import java.io.Serializable;
+
 public class Search implements Serializable {
     private int idSearch;
-    private int userId;
-    private int searchSettingsId;
+    private User user;
+    private SearchSettings searchSettings;
 
     public Search() {}
 
-    public Search(int idSearch, int userId, int searchSettingsId) {
+    public Search(int idSearch, User user, SearchSettings searchSettings) {
         this.idSearch = idSearch;
-        this.userId = userId;
-        this.searchSettingsId = searchSettingsId;
+        this.user = user;
+        this.searchSettings = searchSettings;
+    }
+
+    public Search(User user, SearchSettings searchSettings) {
+        this.user = user;
+        this.searchSettings = searchSettings;
     }
 
     public int getIdSearch() {
@@ -30,28 +38,28 @@ public class Search implements Serializable {
         this.idSearch = idSearch;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getSearchSettingsId() {
-        return searchSettingsId;
+    public SearchSettings getSearchSettings() {
+        return searchSettings;
     }
 
-    public void setSearchSettingsId(int searchSettingsId) {
-        this.searchSettingsId = searchSettingsId;
+    public void setSearchSettings(SearchSettings searchSettings) {
+        this.searchSettings = searchSettings;
     }
 
     @Override
     public String toString() {
         return "Search{" +
                 "idSearch=" + idSearch +
-                ", userId=" + userId +
-                ", searchSettingsId=" + searchSettingsId +
+                ", user=" + user +
+                ", searchSettings=" + searchSettings +
                 '}';
     }
 }
