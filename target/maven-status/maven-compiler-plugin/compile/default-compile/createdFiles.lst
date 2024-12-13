@@ -1,4 +1,5 @@
 rs\ac\fink\exception\RacunarskaOpremaException.class
+rs\ac\fink\start\RacunarskaOprema.class
 rs\ac\fink\rest\ApplicationConfig.class
 rs\ac\fink\rest\ProductRest.class
 rs\ac\fink\data\SearchSettings.class
@@ -7,7 +8,6 @@ rs\ac\fink\dao\SearchSettingsDao.class
 rs\ac\fink\rest\SearchRest.class
 rs\ac\fink\service\PurchaseService.class
 rs\ac\fink\dao\ResourcesManager.class
-rs\ac\fink\vezbe\RacunarskaOprema.class
 rs\ac\fink\data\Product.class
 rs\ac\fink\service\SearchSettingsService.class
 rs\ac\fink\data\User.class
