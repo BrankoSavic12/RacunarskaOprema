@@ -12,6 +12,7 @@ package rs.ac.fink.service;
 import rs.ac.fink.dao.SearchDao;
 import rs.ac.fink.data.Search;
 import rs.ac.fink.exception.RacunarskaOpremaException;
+import rs.ac.fink.dao.ResourcesManager;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,47 +27,79 @@ public class SearchService {
         return instance;
     }
 
-    public Search getSearchById(int idSearch, Connection con) throws RacunarskaOpremaException {
+    public Search getSearchById(int idSearch) throws RacunarskaOpremaException {
+        Connection con = null;
         try {
-            Search search = SearchDao.getInstance().find(idSearch, con);
-            if (search == null) {
-                throw new RacunarskaOpremaException("Search with ID " + idSearch + " not found.");
-            }
-            return search;
+            con = ResourcesManager.getConnection();
+            return SearchDao.getInstance().find(idSearch, con);
         } catch (SQLException e) {
             throw new RacunarskaOpremaException("Failed to retrieve search with ID " + idSearch, e);
+        } finally {
+            ResourcesManager.closeConnection(con);
         }
     }
 
-    public List<Search> getAllSearches(Connection con) throws RacunarskaOpremaException {
+    public List<Search> getAllSearches() throws RacunarskaOpremaException {
+        Connection con = null;
         try {
+            con = ResourcesManager.getConnection();
             return SearchDao.getInstance().findAll(con);
         } catch (SQLException e) {
             throw new RacunarskaOpremaException("Failed to retrieve all searches.", e);
+        } finally {
+            ResourcesManager.closeConnection(con);
         }
     }
 
-    public int addSearch(Search search, Connection con) throws RacunarskaOpremaException {
+    public int addSearch(Search search) throws RacunarskaOpremaException {
+        Connection con = null;
         try {
-            return SearchDao.getInstance().insert(search, con);
+            con = ResourcesManager.getConnection();
+            con.setAutoCommit(false);
+
+            int searchId = SearchDao.getInstance().insert(search, con);
+
+            con.commit();
+            return searchId;
         } catch (SQLException e) {
+            ResourcesManager.rollbackTransactions(con);
             throw new RacunarskaOpremaException("Failed to add search.", e);
+        } finally {
+            ResourcesManager.closeConnection(con);
         }
     }
 
-    public void updateSearch(Search search, Connection con) throws RacunarskaOpremaException {
+    public void updateSearch(Search search) throws RacunarskaOpremaException {
+        Connection con = null;
         try {
+            con = ResourcesManager.getConnection();
+            con.setAutoCommit(false);
+
             SearchDao.getInstance().update(search, con);
+
+            con.commit();
         } catch (SQLException e) {
+            ResourcesManager.rollbackTransactions(con);
             throw new RacunarskaOpremaException("Failed to update search with ID " + search.getIdSearch(), e);
+        } finally {
+            ResourcesManager.closeConnection(con);
         }
     }
 
-    public void deleteSearch(int idSearch, Connection con) throws RacunarskaOpremaException {
+    public void deleteSearch(int idSearch) throws RacunarskaOpremaException {
+        Connection con = null;
         try {
+            con = ResourcesManager.getConnection();
+            con.setAutoCommit(false);
+
             SearchDao.getInstance().delete(idSearch, con);
+
+            con.commit();
         } catch (SQLException e) {
+            ResourcesManager.rollbackTransactions(con);
             throw new RacunarskaOpremaException("Failed to delete search with ID " + idSearch, e);
+        } finally {
+            ResourcesManager.closeConnection(con);
         }
     }
 }

@@ -12,12 +12,10 @@ package rs.ac.fink.rest;
 import rs.ac.fink.data.Search;
 import rs.ac.fink.exception.RacunarskaOpremaException;
 import rs.ac.fink.service.SearchService;
-import rs.ac.fink.dao.ResourcesManager;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.Connection;
 import java.util.List;
 
 @Path("/searches")
@@ -26,8 +24,8 @@ public class SearchRest {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllSearches() {
-        try (Connection con = ResourcesManager.getConnection()) {
-            List<Search> searches = SearchService.getInstance().getAllSearches(con);
+        try {
+            List<Search> searches = SearchService.getInstance().getAllSearches();
             return Response.ok(searches).build();
         } catch (RacunarskaOpremaException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
@@ -40,8 +38,8 @@ public class SearchRest {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSearchById(@PathParam("id") int id) {
-        try (Connection con = ResourcesManager.getConnection()) {
-            Search search = SearchService.getInstance().getSearchById(id, con);
+        try {
+            Search search = SearchService.getInstance().getSearchById(id);
             return Response.ok(search).build();
         } catch (RacunarskaOpremaException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
@@ -54,8 +52,8 @@ public class SearchRest {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addSearch(Search search) {
-        try (Connection con = ResourcesManager.getConnection()) {
-            int newId = SearchService.getInstance().addSearch(search, con);
+        try {
+            int newId = SearchService.getInstance().addSearch(search);
             return Response.status(Response.Status.CREATED).entity("Search created with ID " + newId).build();
         } catch (RacunarskaOpremaException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
@@ -69,9 +67,9 @@ public class SearchRest {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateSearch(@PathParam("id") int id, Search search) {
-        try (Connection con = ResourcesManager.getConnection()) {
+        try {
             search.setIdSearch(id);
-            SearchService.getInstance().updateSearch(search, con);
+            SearchService.getInstance().updateSearch(search);
             return Response.ok("Search with ID " + id + " updated.").build();
         } catch (RacunarskaOpremaException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
@@ -84,8 +82,8 @@ public class SearchRest {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteSearch(@PathParam("id") int id) {
-        try (Connection con = ResourcesManager.getConnection()) {
-            SearchService.getInstance().deleteSearch(id, con);
+        try {
+            SearchService.getInstance().deleteSearch(id);
             return Response.ok("Search with ID " + id + " deleted.").build();
         } catch (RacunarskaOpremaException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();

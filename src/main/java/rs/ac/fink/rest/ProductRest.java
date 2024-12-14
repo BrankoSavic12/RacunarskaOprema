@@ -14,12 +14,10 @@ package rs.ac.fink.rest;
 import rs.ac.fink.data.Product;
 import rs.ac.fink.exception.RacunarskaOpremaException;
 import rs.ac.fink.service.ProductService;
-import rs.ac.fink.dao.ResourcesManager;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.Connection;
 import java.util.List;
 
 @Path("/products")
@@ -28,9 +26,9 @@ public class ProductRest {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllProducts() {
-        try (Connection con = ResourcesManager.getConnection()) {
+        try {
             System.out.println("Fetching all products...");
-            List<Product> products = ProductService.getInstance().getAllProducts(con);
+            List<Product> products = ProductService.getInstance().getAllProducts();
             return Response.ok(products).build();
         } catch (RacunarskaOpremaException e) {
             e.printStackTrace();
@@ -45,9 +43,9 @@ public class ProductRest {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductById(@PathParam("id") int id) {
-        try (Connection con = ResourcesManager.getConnection()) {
+        try {
             System.out.println("Fetching product with ID: " + id);
-            Product product = ProductService.getInstance().getProductById(id, con);
+            Product product = ProductService.getInstance().getProductById(id);
             return Response.ok(product).build();
         } catch (RacunarskaOpremaException e) {
             e.printStackTrace();
@@ -62,9 +60,9 @@ public class ProductRest {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addProduct(Product product) {
-        try (Connection con = ResourcesManager.getConnection()) {
+        try {
             System.out.println("Adding product: " + product);
-            int newId = ProductService.getInstance().addProduct(product, con);
+            int newId = ProductService.getInstance().addProduct(product);
             System.out.println("Product added with ID: " + newId);
             return Response.status(Response.Status.CREATED).entity("Product created with ID " + newId).build();
         } catch (RacunarskaOpremaException e) {
@@ -81,10 +79,10 @@ public class ProductRest {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateProduct(@PathParam("id") int id, Product product) {
-        try (Connection con = ResourcesManager.getConnection()) {
+        try {
             product.setIdProduct(id);
             System.out.println("Updating product: " + product);
-            ProductService.getInstance().updateProduct(product, con);
+            ProductService.getInstance().updateProduct(product);
             System.out.println("Product updated with ID: " + id);
             return Response.ok("Product with ID " + id + " updated.").build();
         } catch (RacunarskaOpremaException e) {
@@ -100,9 +98,9 @@ public class ProductRest {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteProduct(@PathParam("id") int id) {
-        try (Connection con = ResourcesManager.getConnection()) {
+        try {
             System.out.println("Deleting product with ID: " + id);
-            ProductService.getInstance().deleteProduct(id, con);
+            ProductService.getInstance().deleteProduct(id);
             System.out.println("Product deleted with ID: " + id);
             return Response.ok("Product with ID " + id + " deleted.").build();
         } catch (RacunarskaOpremaException e) {

@@ -14,16 +14,11 @@ package rs.ac.fink.rest;
 import rs.ac.fink.data.User;
 import rs.ac.fink.exception.RacunarskaOpremaException;
 import rs.ac.fink.service.UserService;
-import rs.ac.fink.dao.ResourcesManager;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
-
-
 
 @Path("/users")
 public class UserRest {
@@ -31,8 +26,8 @@ public class UserRest {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsers() {
-        try (Connection con = ResourcesManager.getConnection()) {
-            List<User> users = UserService.getInstance().getAllUsers(con);
+        try {
+            List<User> users = UserService.getInstance().getAllUsers();
             return Response.ok(users).build();
         } catch (RacunarskaOpremaException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
@@ -45,8 +40,8 @@ public class UserRest {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserById(@PathParam("id") int id) {
-        try (Connection con = ResourcesManager.getConnection()) {
-            User user = UserService.getInstance().getUserById(id, con);
+        try {
+            User user = UserService.getInstance().getUserById(id);
             return Response.ok(user).build();
         } catch (RacunarskaOpremaException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
@@ -59,8 +54,8 @@ public class UserRest {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addUser(User user) {
-        try (Connection con = ResourcesManager.getConnection()) {
-            int newId = UserService.getInstance().addUser(user, con);
+        try {
+            int newId = UserService.getInstance().addUser(user);
             return Response.status(Response.Status.CREATED).entity("User created with ID " + newId).build();
         } catch (RacunarskaOpremaException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
@@ -74,9 +69,9 @@ public class UserRest {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(@PathParam("id") int id, User user) {
-        try (Connection con = ResourcesManager.getConnection()) {
+        try {
             user.setIdUser(id);
-            UserService.getInstance().updateUser(user, con);
+            UserService.getInstance().updateUser(user);
             return Response.ok("User with ID " + id + " updated.").build();
         } catch (RacunarskaOpremaException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
@@ -89,8 +84,8 @@ public class UserRest {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteUser(@PathParam("id") int id) {
-        try (Connection con = ResourcesManager.getConnection()) {
-            UserService.getInstance().deleteUser(id, con);
+        try {
+            UserService.getInstance().deleteUser(id);
             return Response.ok("User with ID " + id + " deleted.").build();
         } catch (RacunarskaOpremaException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();

@@ -9,7 +9,6 @@ package rs.ac.fink.dao;
  * @author MyPC
  */
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -34,7 +33,12 @@ public class ResourcesManager {
     public static Connection getConnection() throws SQLException {
         String url = "jdbc:mysql://localhost/ComputerShop?user=root&password=&useSSL=false&serverTimezone=UTC";
         System.out.println("Attempting to connect to database with URL: " + url);
-        return DriverManager.getConnection(url);
+        Connection con = DriverManager.getConnection(url);
+
+        // Isključivanje automatskog commit-a za sve konekcije
+        con.setAutoCommit(false);
+        System.out.println("Connection established with autocommit set to false.");
+        return con;
     }
 
     // Zatvara ResultSet i PreparedStatement
@@ -59,18 +63,19 @@ public class ResourcesManager {
         }
     }
 
-    // Zatvara Connection
+    // Zatvara Connection sa rollback-om ako nije potvrđena transakcija
     public static void closeConnection(Connection con) {
-        try {
-            if (con != null) {
-                con.close();
-                System.out.println("Connection closed successfully.");
-            }
-        } catch (Exception e) {
-            System.err.println("Error closing Connection:");
-            e.printStackTrace();
+    try {
+        if (con != null) {
+            con.close();
+            System.out.println("Connection closed successfully.");
         }
+    } catch (Exception e) {
+        System.err.println("Error closing Connection:");
+        e.printStackTrace();
     }
+}
+
 
     // Rollback transakcija
     public static void rollbackTransactions(Connection con) {
@@ -89,6 +94,7 @@ public class ResourcesManager {
     public static void main(String[] args) {
         try (Connection con = getConnection()) {
             System.out.println("Connected to the database successfully!");
+            System.out.println("Autocommit is set to: " + con.getAutoCommit());
         } catch (SQLException e) {
             System.err.println("Database connection failed: " + e.getMessage());
             e.printStackTrace();

@@ -13,6 +13,7 @@ package rs.ac.fink.service;
 import rs.ac.fink.dao.ProductDao;
 import rs.ac.fink.data.Product;
 import rs.ac.fink.exception.RacunarskaOpremaException;
+import rs.ac.fink.dao.ResourcesManager;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -27,47 +28,80 @@ public class ProductService {
         return instance;
     }
 
-    public Product getProductById(int idProduct, Connection con) throws RacunarskaOpremaException {
+    public Product getProductById(int idProduct) throws RacunarskaOpremaException {
+        Connection con = null;
         try {
-            Product product = ProductDao.getInstance().find(idProduct, con);
-            if (product == null) {
-                throw new RacunarskaOpremaException("Product with ID " + idProduct + " not found.");
-            }
-            return product;
+            con = ResourcesManager.getConnection();
+            return ProductDao.getInstance().find(idProduct, con);
         } catch (SQLException e) {
             throw new RacunarskaOpremaException("Failed to retrieve product with ID " + idProduct, e);
+        } finally {
+            ResourcesManager.closeConnection(con);
         }
     }
 
-    public List<Product> getAllProducts(Connection con) throws RacunarskaOpremaException {
+    public List<Product> getAllProducts() throws RacunarskaOpremaException {
+        Connection con = null;
         try {
+            con = ResourcesManager.getConnection();
             return ProductDao.getInstance().findAll(con);
         } catch (SQLException e) {
             throw new RacunarskaOpremaException("Failed to retrieve all products.", e);
+        } finally {
+            ResourcesManager.closeConnection(con);
         }
     }
 
-    public int addProduct(Product product, Connection con) throws RacunarskaOpremaException {
+    public int addProduct(Product product) throws RacunarskaOpremaException {
+        Connection con = null;
         try {
-            return ProductDao.getInstance().insert(product, con);
+            con = ResourcesManager.getConnection();
+            con.setAutoCommit(false);
+
+            int productId = ProductDao.getInstance().insert(product, con);
+
+            con.commit();
+            return productId;
         } catch (SQLException e) {
+            ResourcesManager.rollbackTransactions(con);
             throw new RacunarskaOpremaException("Failed to add product.", e);
+        } finally {
+            ResourcesManager.closeConnection(con);
         }
     }
 
-    public void updateProduct(Product product, Connection con) throws RacunarskaOpremaException {
+    public void updateProduct(Product product) throws RacunarskaOpremaException {
+        Connection con = null;
         try {
+            con = ResourcesManager.getConnection();
+            con.setAutoCommit(false);
+
             ProductDao.getInstance().update(product, con);
+
+            con.commit();
         } catch (SQLException e) {
+            ResourcesManager.rollbackTransactions(con);
             throw new RacunarskaOpremaException("Failed to update product with ID " + product.getIdProduct(), e);
+        } finally {
+            ResourcesManager.closeConnection(con);
         }
     }
 
-    public void deleteProduct(int idProduct, Connection con) throws RacunarskaOpremaException {
+    public void deleteProduct(int idProduct) throws RacunarskaOpremaException {
+        Connection con = null;
         try {
+            con = ResourcesManager.getConnection();
+            con.setAutoCommit(false);
+
             ProductDao.getInstance().delete(idProduct, con);
+
+            con.commit();
         } catch (SQLException e) {
+            ResourcesManager.rollbackTransactions(con);
             throw new RacunarskaOpremaException("Failed to delete product with ID " + idProduct, e);
+        } finally {
+            ResourcesManager.closeConnection(con);
         }
     }
 }
+

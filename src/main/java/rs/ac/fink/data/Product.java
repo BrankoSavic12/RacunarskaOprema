@@ -11,7 +11,7 @@ package rs.ac.fink.data;
 
 import java.io.Serializable;
 
-// Klasa za reprezentaciju proizvoda
+// Klasa za reprezentaciju proizvoda@JsonPropertyOrder({"idProduct", "name", "price", "type", "stockQuantity"})
 public class Product implements Serializable {
     private int idProduct;
     private String name;

@@ -12,6 +12,7 @@ package rs.ac.fink.service;
 import rs.ac.fink.dao.SearchSettingsDao;
 import rs.ac.fink.data.SearchSettings;
 import rs.ac.fink.exception.RacunarskaOpremaException;
+import rs.ac.fink.dao.ResourcesManager;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,47 +27,79 @@ public class SearchSettingsService {
         return instance;
     }
 
-    public SearchSettings getSearchSettingsById(int idSearchSettings, Connection con) throws RacunarskaOpremaException {
+    public SearchSettings getSearchSettingsById(int idSearchSettings) throws RacunarskaOpremaException {
+        Connection con = null;
         try {
-            SearchSettings searchSettings = SearchSettingsDao.getInstance().find(idSearchSettings, con);
-            if (searchSettings == null) {
-                throw new RacunarskaOpremaException("SearchSettings with ID " + idSearchSettings + " not found.");
-            }
-            return searchSettings;
+            con = ResourcesManager.getConnection();
+            return SearchSettingsDao.getInstance().find(idSearchSettings, con);
         } catch (SQLException e) {
             throw new RacunarskaOpremaException("Failed to retrieve search settings with ID " + idSearchSettings, e);
+        } finally {
+            ResourcesManager.closeConnection(con);
         }
     }
 
-    public List<SearchSettings> getAllSearchSettings(Connection con) throws RacunarskaOpremaException {
+    public List<SearchSettings> getAllSearchSettings() throws RacunarskaOpremaException {
+        Connection con = null;
         try {
+            con = ResourcesManager.getConnection();
             return SearchSettingsDao.getInstance().findAll(con);
         } catch (SQLException e) {
             throw new RacunarskaOpremaException("Failed to retrieve all search settings.", e);
+        } finally {
+            ResourcesManager.closeConnection(con);
         }
     }
 
-    public int addSearchSettings(SearchSettings searchSettings, Connection con) throws RacunarskaOpremaException {
+    public int addSearchSettings(SearchSettings searchSettings) throws RacunarskaOpremaException {
+        Connection con = null;
         try {
-            return SearchSettingsDao.getInstance().insert(searchSettings, con);
+            con = ResourcesManager.getConnection();
+            con.setAutoCommit(false);
+
+            int searchSettingsId = SearchSettingsDao.getInstance().insert(searchSettings, con);
+
+            con.commit();
+            return searchSettingsId;
         } catch (SQLException e) {
+            ResourcesManager.rollbackTransactions(con);
             throw new RacunarskaOpremaException("Failed to add search settings.", e);
+        } finally {
+            ResourcesManager.closeConnection(con);
         }
     }
 
-    public void updateSearchSettings(SearchSettings searchSettings, Connection con) throws RacunarskaOpremaException {
+    public void updateSearchSettings(SearchSettings searchSettings) throws RacunarskaOpremaException {
+        Connection con = null;
         try {
+            con = ResourcesManager.getConnection();
+            con.setAutoCommit(false);
+
             SearchSettingsDao.getInstance().update(searchSettings, con);
+
+            con.commit();
         } catch (SQLException e) {
+            ResourcesManager.rollbackTransactions(con);
             throw new RacunarskaOpremaException("Failed to update search settings with ID " + searchSettings.getIdSearchSettings(), e);
+        } finally {
+            ResourcesManager.closeConnection(con);
         }
     }
 
-    public void deleteSearchSettings(int idSearchSettings, Connection con) throws RacunarskaOpremaException {
+    public void deleteSearchSettings(int idSearchSettings) throws RacunarskaOpremaException {
+        Connection con = null;
         try {
+            con = ResourcesManager.getConnection();
+            con.setAutoCommit(false);
+
             SearchSettingsDao.getInstance().delete(idSearchSettings, con);
+
+            con.commit();
         } catch (SQLException e) {
+            ResourcesManager.rollbackTransactions(con);
             throw new RacunarskaOpremaException("Failed to delete search settings with ID " + idSearchSettings, e);
+        } finally {
+            ResourcesManager.closeConnection(con);
         }
     }
 }
