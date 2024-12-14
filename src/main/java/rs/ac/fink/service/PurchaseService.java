@@ -56,39 +56,47 @@ public class PurchaseService {
     }
 
     public int addPurchase(Purchase purchase) throws RacunarskaOpremaException {
-    Connection con = null;
-    try {
-        con = ResourcesManager.getConnection();
-        con.setAutoCommit(false);
+        Connection con = null;
+        try {
+            con = ResourcesManager.getConnection();
+            con.setAutoCommit(false);
 
-        // Provera da li korisnik ima dovoljno sredstava
-        User user = UserDao.getInstance().find(purchase.getUser().getIdUser(), con);
-        Product product = ProductDao.getInstance().find(purchase.getProduct().getIdProduct(), con);
+            // Provera da li korisnik ima dovoljno sredstava
+            User user = UserDao.getInstance().find(purchase.getUser().getIdUser(), con);
+            Product product = ProductDao.getInstance().find(purchase.getProduct().getIdProduct(), con);
 
-        if (user.getAccountBalance() < product.getPrice()) {
-            throw new RacunarskaOpremaException("Korisnik nema dovoljno sredstava za kupovinu.");
+            if (user.getAccountBalance() < product.getPrice()) {
+                throw new RacunarskaOpremaException("Korisnik nema dovoljno sredstava za kupovinu.");
+            }
+
+            // Provera da li ima dovoljno proizvoda na stanju
+            if (product.getStockQuantity() <= 0) {
+                throw new RacunarskaOpremaException("Proizvod je trenutno rasprodat.");
+            }
+
+            // Umanji iznos na računu korisnika
+            long newBalance = user.getAccountBalance() - product.getPrice();
+            user.setAccountBalance(newBalance);
+            UserDao.getInstance().update(user, con);
+
+            // Umanji količinu proizvoda na stanju
+            long newStockQuantity = product.getStockQuantity() - 1;
+            product.setStockQuantity(newStockQuantity);
+            ProductDao.getInstance().update(product, con);
+
+            // Kreiraj kupovinu
+            int purchaseId = PurchaseDao.getInstance().insert(purchase, con);
+
+            // Potvrdi transakciju
+            con.commit();
+            return purchaseId;
+        } catch (SQLException e) {
+            ResourcesManager.rollbackTransactions(con);
+            throw new RacunarskaOpremaException("Kupovina nije uspešno izvršena.", e);
+        } finally {
+            ResourcesManager.closeConnection(con);
         }
-
-        // Umanji iznos na računu korisnika
-        long newBalance = user.getAccountBalance() - product.getPrice();
-        user.setAccountBalance(newBalance);
-        UserDao.getInstance().update(user, con);
-
-        // Kreiraj kupovinu
-        int purchaseId = PurchaseDao.getInstance().insert(purchase, con);
-        if (true) { // Ovo će uvek izazvati grešku za test
-            throw new SQLException("Simulirana greška tokom transakcije!");
-        }
-        con.commit();
-        return purchaseId;
-    } catch (SQLException e) {
-        ResourcesManager.rollbackTransactions(con);
-        throw new RacunarskaOpremaException("Kupovina nije uspešno izvršena.", e);
-    } finally {
-        ResourcesManager.closeConnection(con);
     }
-}
-
 
     public void updatePurchase(Purchase purchase) throws RacunarskaOpremaException {
         Connection con = null;
