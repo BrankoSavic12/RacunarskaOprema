@@ -1,0 +1,669 @@
+{
+	"info": {
+		"_postman_id": "147edfb1-eeb8-4db9-8a6c-fa1471bc8f61",
+		"name": "RacunarskaOprema",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39841303"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "getUserByID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"idUser\": 16,\r\n        \"fullName\": \"Ana Ivanovic\",\r\n        \"username\": \"ana\",\r\n        \"email\": \"ana@example.com\",\r\n        \"birthDate\": \"1990-01-01\",\r\n        \"accountBalance\": 9000,\r\n        \"spentAmount\": 17000\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/users/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"users",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n        \"fullName\": \"Andjela Peric\",\r\n        \"username\": \"andjela\",\r\n        \"email\": \"andjela@example.com\",\r\n        \"birthDate\": \"1990-01-01\",\r\n        \"accountBalance\": 9500,\r\n        \"spentAmount\": 7500\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n        \"idUser\": 10,\r\n        \"fullName\": \"Janko Miljkovic\",\r\n        \"username\": \"janko\",\r\n        \"email\": \"janko@example.com\",\r\n        \"birthDate\": \"1990-01-01\",\r\n        \"accountBalance\": 8500,\r\n        \"spentAmount\": 12000\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/users/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"users",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUser",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/users/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"users",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "GetProduct",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProductByID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/products/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"products",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addProduct",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \"idProduct\": 12,\r\n        \"name\": \"Mis\",\r\n        \"price\": 1200,\r\n        \"type\": \"Electronics\",\r\n        \"stockQuantity\": 10\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/products/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteProduct",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \"idProduct\": 12,\r\n        \"name\": \"Hard Disk\",\r\n        \"price\": 11200,\r\n        \"type\": \"Electronics\",\r\n        \"stockQuantity\": 15\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/products/12",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"products",
+								"12"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Purchase",
+			"item": [
+				{
+					"name": "addPurchase",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"user\": {\r\n            \"idUser\": 23\r\n        },\r\n        \"product\": {\r\n            \"idProduct\": 18\r\n        }\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/purchases",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"purchases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPurchase",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/purchases",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"purchases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPurchaseByID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/purchases/17",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"purchases",
+								"17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatePurchase",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \"idPurchase\": 17,\r\n        \"user\": {\r\n            \"idUser\": 23\r\n        },\r\n        \"product\": {\r\n            \"idProduct\": 10\r\n        }\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/purchases/17",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"purchases",
+								"17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletePurchase",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/purchases/15",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"purchases",
+								"15"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "getSearch",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"idSearch\": 8,\r\n        \"user\": {\r\n            \"idUser\": 23\r\n        \r\n        },\r\n        \"searchSettings\": {\r\n            \"idSearchSettings\": 12\r\n        \r\n        }\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/searches",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"searches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getSearchByID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/searches/11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"searches",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addSearch",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"idSearch\": 8,\r\n        \"user\": {\r\n            \"idUser\": 14\r\n        \r\n        },\r\n        \"searchSettings\": {\r\n            \"idSearchSettings\": 12\r\n        \r\n        }\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/searches",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"searches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateSearch",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"idSearch\": 11,\r\n        \"user\": {\r\n            \"idUser\": 22\r\n        \r\n        },\r\n        \"searchSettings\": {\r\n            \"idSearchSettings\": 12\r\n        \r\n        }\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/searches/11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"searches",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteSearch",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/searches/12",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"searches",
+								"12"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Search_Settings",
+			"item": [
+				{
+					"name": "getSearchSettings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/search-settings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"search-settings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getSearchSettingsByID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/search-settings/12",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"search-settings",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addSearchSettings",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idSearchSettings\": 15,\r\n    \"keyword\": \"Igricee\",\r\n    \"maxPrice\": 12000,\r\n    \"minPrice\": 10000,\r\n    \"type\": \"Kompjuter\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/search-settings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"search-settings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateSearchSettings",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \"idSearchSettings\": 14,\r\n        \"minPrice\": 15000,\r\n        \"maxPrice\": 18000,\r\n        \"type\": \"Kompjuter\",\r\n        \"keyword\": \"Igrice\"\r\n    },",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/search-settings/14",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"search-settings",
+								"14"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteSearchSettings",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RacunarskaOprema/rest/search-settings/15",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RacunarskaOprema",
+								"rest",
+								"search-settings",
+								"15"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
