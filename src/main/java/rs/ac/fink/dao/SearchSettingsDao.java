@@ -68,29 +68,25 @@ public class SearchSettingsDao {
         return settingsList;
     }
 
-    public int insert(SearchSettings settings, Connection con) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        int id = -1;
-        try {
-            ps = con.prepareStatement(
-                    "INSERT INTO search_settings (min_price, max_price, type, keyword) VALUES (?, ?, ?, ?)",
-                    Statement.RETURN_GENERATED_KEYS
-            );
-            ps.setLong(1, settings.getMinPrice());
-            ps.setLong(2, settings.getMaxPrice());
-            ps.setString(3, settings.getType());
-            ps.setString(4, settings.getKeyword());
-            ps.executeUpdate();
-            rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                id = rs.getInt(1);
-            }
-        } finally {
-            ResourcesManager.closeResources(rs, ps);
-        }
-        return id;
+public int insert(SearchSettings settings, Connection con) throws SQLException {
+    PreparedStatement ps = null;
+    try {
+        ps = con.prepareStatement(
+            "INSERT INTO search_settings (id_search_settings, min_price, max_price, type, keyword) VALUES (?, ?, ?, ?, ?)"
+        );
+        ps.setInt(1, settings.getIdSearchSettings()); // ručno postavljaš ID
+        ps.setLong(2, settings.getMinPrice());
+        ps.setLong(3, settings.getMaxPrice());
+        ps.setString(4, settings.getType());
+        ps.setString(5, settings.getKeyword());
+
+        ps.executeUpdate();
+
+        return settings.getIdSearchSettings(); // vraća isti ID koji si prosledio
+    } finally {
+        ResourcesManager.closeResources(null, ps);
     }
+}
 
     public void update(SearchSettings settings, Connection con) throws SQLException {
         PreparedStatement ps = null;
