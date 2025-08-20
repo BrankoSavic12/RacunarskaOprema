@@ -74,35 +74,27 @@ public class SearchDao {
         return searches;
     }
 
-    public int insert(Search search, Connection con) throws SQLException {
+public int insert(Search search, Connection con) throws SQLException {
     PreparedStatement ps = null;
-    ResultSet rs = null;
-    int id = -1;
     try {
         ps = con.prepareStatement(
-                "INSERT INTO search (fk_user, fk_search_settings) VALUES (?, ?)",
-                Statement.RETURN_GENERATED_KEYS
+            "INSERT INTO search (id_search, fk_user, fk_search_settings) VALUES (?, ?, ?)"
         );
-        int userId = search.getUser().getIdUser();
-        int searchSettingsId = search.getSearchSettings().getIdSearchSettings();
 
-        System.out.println("User ID for Search: " + userId);
-        System.out.println("SearchSettings ID for Search: " + searchSettingsId);
+        ps.setInt(1, search.getIdSearch()); // ručno ID
+        ps.setInt(2, search.getUser().getIdUser());
+        ps.setInt(3, search.getSearchSettings().getIdSearchSettings());
 
-        ps.setInt(1, userId);
-        ps.setInt(2, searchSettingsId);
-
-        System.out.println("Executing query: INSERT INTO search (fk_user, fk_search_settings) VALUES (" + userId + ", " + searchSettingsId + ")");
+        System.out.println("Executing query: INSERT INTO search (id_search, fk_user, fk_search_settings) VALUES (" 
+            + search.getIdSearch() + ", " + search.getUser().getIdUser() + ", " 
+            + search.getSearchSettings().getIdSearchSettings() + ")");
 
         ps.executeUpdate();
-        rs = ps.getGeneratedKeys();
-        if (rs.next()) {
-            id = rs.getInt(1);
-        }
+
+        return search.getIdSearch(); // vraća isti ID
     } finally {
-        ResourcesManager.closeResources(rs, ps);
+        ResourcesManager.closeResources(null, ps);
     }
-    return id;
 }
 
 
