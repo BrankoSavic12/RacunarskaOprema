@@ -76,28 +76,21 @@ public class ProductDao {
 
     public int insert(Product product, Connection con) throws SQLException {
     PreparedStatement ps = null;
-    ResultSet rs = null;
-    int id = -1;
     try {
-        System.out.println("Preparing to insert product: " + product);
         ps = con.prepareStatement(
-                "INSERT INTO product (name, price, type, stock_quantity) VALUES (?, ?, ?, ?)",
-                Statement.RETURN_GENERATED_KEYS
+            "INSERT INTO product (id_product, name, price, type, stock_quantity) VALUES (?, ?, ?, ?, ?)"
         );
-        ps.setString(1, product.getName());
-        ps.setLong(2, product.getPrice());
-        ps.setString(3, product.getType());
-        ps.setLong(4, product.getStockQuantity());
+        ps.setInt(1, product.getIdProduct());
+        ps.setString(2, product.getName());
+        ps.setLong(3, product.getPrice());
+        ps.setString(4, product.getType());
+        ps.setLong(5, product.getStockQuantity());
+
         ps.executeUpdate();
-        rs = ps.getGeneratedKeys();
-        if (rs.next()) {
-            id = rs.getInt(1);
-            System.out.println("Inserted product with ID: " + id);
-        }
+        return product.getIdProduct(); 
     } finally {
-        ResourcesManager.closeResources(rs, ps);
+        ResourcesManager.closeResources(null, ps);
     }
-    return id;
 }
 
 
