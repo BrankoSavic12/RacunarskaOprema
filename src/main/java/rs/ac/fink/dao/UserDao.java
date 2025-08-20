@@ -73,31 +73,27 @@ public class UserDao {
         return users;
     }
 
-    public int insert(User user, Connection con) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        int id = -1;
-        try {
-            ps = con.prepareStatement(
-                    "INSERT INTO user (full_name, username, email, birth_date, account_balance, spent_amount) VALUES (?, ?, ?, ?, ?, ?)",
-                    Statement.RETURN_GENERATED_KEYS
-            );
-            ps.setString(1, user.getFullName());
-            ps.setString(2, user.getUsername());
-            ps.setString(3, user.getEmail());
-            ps.setString(4, user.getBirthDate());
-            ps.setLong(5, user.getAccountBalance());
-            ps.setLong(6, user.getSpentAmount());
-            ps.executeUpdate();
-            rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                id = rs.getInt(1);
-            }
-        } finally {
-            ResourcesManager.closeResources(rs, ps);
-        }
-        return id;
+      public int insert(User user, Connection con) throws SQLException {
+    PreparedStatement ps = null;
+    try {
+        ps = con.prepareStatement(
+                "INSERT INTO user (id_user, full_name, username, email, birth_date, account_balance, spent_amount) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        );
+        ps.setInt(1, user.getIdUser());        
+        ps.setString(2, user.getFullName());
+        ps.setString(3, user.getUsername());
+        ps.setString(4, user.getEmail());
+        ps.setString(5, user.getBirthDate()); 
+        ps.setLong(6, user.getAccountBalance());
+        ps.setLong(7, user.getSpentAmount());
+
+        ps.executeUpdate();
+
+        return user.getIdUser(); 
+    } finally {
+        ResourcesManager.closeResources(null, ps);
     }
+}
 
     public void update(User user, Connection con) throws SQLException {
         PreparedStatement ps = null;
