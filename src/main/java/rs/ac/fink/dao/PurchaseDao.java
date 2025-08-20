@@ -50,6 +50,7 @@ public class PurchaseDao {
         return purchase;
     }
 
+
     public List<Purchase> findAll(Connection con) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -73,27 +74,23 @@ public class PurchaseDao {
         return purchases;
     }
 
-    public int insert(Purchase purchase, Connection con) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        int id = -1;
-        try {
-            ps = con.prepareStatement(
-                    "INSERT INTO purchase (fk_user, fk_product) VALUES (?, ?)",
-                    Statement.RETURN_GENERATED_KEYS
-            );
-            ps.setInt(1, purchase.getUser().getIdUser()); // Koristi User objekat
-            ps.setInt(2, purchase.getProduct().getIdProduct()); // Koristi Product objekat
-            ps.executeUpdate();
-            rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                id = rs.getInt(1);
-            }
-        } finally {
-            ResourcesManager.closeResources(rs, ps);
-        }
-        return id;
+public int insert(Purchase purchase, Connection con) throws SQLException {
+    PreparedStatement ps = null;
+    try {
+        ps = con.prepareStatement(
+            "INSERT INTO purchase (id_purchase, fk_user, fk_product) VALUES (?, ?, ?)"
+        );
+        ps.setInt(1, purchase.getIdPurchase());
+        ps.setInt(2, purchase.getUser().getIdUser());
+        ps.setInt(3, purchase.getProduct().getIdProduct());
+
+        ps.executeUpdate();
+        return purchase.getIdPurchase();
+    } finally {
+        ResourcesManager.closeResources(null, ps);
     }
+}
+
 
     public void update(Purchase purchase, Connection con) throws SQLException {
         PreparedStatement ps = null;
